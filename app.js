@@ -56,15 +56,14 @@ app.use(function(err, req, res, next) {
   });
 });
 
-console.log("Test mongodb");
-
 var mongoDbUtil = require("./MongoDbUtil");
 
-mongoDbUtil.insert({
-    title : "Test inserimento",
-    text  : "Testo test inserimento"
+var express = require('express');
+var app = express();
+app.get('/', function (req, res) {
+  res.send('Hello World')
 });
 
-mongoDbUtil.findAll();
+app.listen(3000);
 
 module.exports = app;

@@ -53,5 +53,51 @@ exports.findAll = function(newDocument) {
             db.close();
         });
     });
+};
 
+exports.findById = function(id) {
+    console.log('Find document by id');
+
+    var findDocument = function(db, callback) {
+        // Get the documents collection
+        var collection = db.collection('text');
+        // Find some documents
+        collection.find({_id : id}).toArray(function(err, docs) {
+            console.log("Found the following records");
+            console.dir(docs);
+            callback(docs);
+        });
+    };
+
+    MongoClient.connect(url, function(err, db) {
+        assert.equal(null, err);
+        console.log("Connected correctly to server");
+        findDocument(db, function() {
+            db.close();
+        });
+    });
+
+};
+
+exports.update = function(id, updatedDocument) {
+    console.log('Find document by id');
+
+    var update = function(db, callback) {
+        // Get the documents collection
+        var collection = db.collection('text');
+        // Find some documents
+        collection.findOneAndUpdate({_id : id}, updatedDocument).toArray(function(err, docs) {
+            console.log("Found the following records");
+            console.dir(docs);
+            callback(docs);
+        });
+    };
+
+    MongoClient.connect(url, function(err, db) {
+        assert.equal(null, err);
+        console.log("Connected correctly to server");
+        update(db, function() {
+            db.close();
+        });
+    });
 };
