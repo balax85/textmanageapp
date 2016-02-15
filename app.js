@@ -8,6 +8,8 @@ var bodyParser = require('body-parser');
 var routes = require('./routes/index');
 var users = require('./routes/users');
 
+var wagner = require('wagner-core');
+
 var app = express();
 
 // view engine setup
@@ -56,14 +58,15 @@ app.use(function(err, req, res, next) {
   });
 });
 
-var mongoDbUtil = require("./MongoDbUtil");
+//var mongoDbUtil = require("./MongoDbUtil");
 
 var express = require('express');
+var wagner = require('wagner-core');
 var app = express();
-app.get('/', function (req, res) {
-  res.send('Hello World')
-});
+app.use('/api/v1', require('./api')(wagner));
+
 
 app.listen(3000);
+console.log('Listening on port 3000!');
 
 module.exports = app;

@@ -1,0 +1,23 @@
+
+<input type="text" name="search" ng-model="searchText"><span></span> 
+
+<a type="button" href="" ng-click="searchPosts()" class="btn btn-lg btn-success" >Search Text</a>
+
+<table style="width:100%">
+	<tr>
+		<th>Id</th>
+		<th>Title</th>
+		<th>Score</th>
+	</tr>
+	
+	<tr ng-repeat="post in posts">
+		<td>{{post.id}}</td>
+		<td><a href="#/edit/{{post.id}}"><i class="fa fa-home"></i>{{post.title}}</a></td>
+		<td>{{post.score}}</td>
+	</tr>
+	
+</table>
+
+<br>
+			
+<a type="button" href="#/add" class="btn btn-lg btn-success" >Add new post</a>

@@ -7,7 +7,7 @@ var url = 'mongodb://localhost:27017/textmanage';
 var MongoClient = require('mongodb').MongoClient
     , assert = require('assert');
 
-exports.insert = function(newDocument) {
+exports.insert = function(newDocument, callback) {
     console.log('Insert new document');
 
     newDocument.inserDate = new Date();
@@ -16,8 +16,7 @@ exports.insert = function(newDocument) {
         // Get the documents collection
         var collection = db.collection('text');
         // Insert some documents
-        collection.insert(newDocument, function(err, result) {
-            console.log("result", result);
+        collection.insertOne(newDocument, function(err, result) {
             callback(result);
         });
     };
@@ -25,14 +24,15 @@ exports.insert = function(newDocument) {
     MongoClient.connect(url, function(err, db) {
         assert.equal(null, err);
         console.log("Connected correctly to server");
-        insertDocuments(db, function() {
+        insertDocuments(db, function(result) {
             db.close();
+            callback(result);
         });
     });
 
 };
 
-exports.findAll = function(newDocument) {
+exports.findAll = function(callback) {
     console.log('Find all documents');
 
     var findDocuments = function(db, callback) {
@@ -40,8 +40,6 @@ exports.findAll = function(newDocument) {
         var collection = db.collection('text');
         // Find some documents
         collection.find({}).toArray(function(err, docs) {
-            console.log("Found the following records");
-            console.dir(docs);
             callback(docs);
         });
     }
@@ -49,13 +47,14 @@ exports.findAll = function(newDocument) {
     MongoClient.connect(url, function(err, db) {
         assert.equal(null, err);
         console.log("Connected correctly to server");
-        findDocuments(db, function() {
+        findDocuments(db, function(docs) {
             db.close();
+            callback(docs);
         });
     });
 };
 
-exports.findById = function(id) {
+exports.findById = function(id, callback) {
     console.log('Find document by id');
 
     var findDocument = function(db, callback) {
@@ -63,8 +62,6 @@ exports.findById = function(id) {
         var collection = db.collection('text');
         // Find some documents
         collection.find({_id : id}).toArray(function(err, docs) {
-            console.log("Found the following records");
-            console.dir(docs);
             callback(docs);
         });
     };
@@ -72,14 +69,15 @@ exports.findById = function(id) {
     MongoClient.connect(url, function(err, db) {
         assert.equal(null, err);
         console.log("Connected correctly to server");
-        findDocument(db, function() {
+        findDocument(db, function(docs) {
             db.close();
+            callback(docs);
         });
     });
 
 };
 
-exports.update = function(id, updatedDocument) {
+exports.update = function(id, updatedDocument, callback) {
     console.log('Find document by id');
 
     var update = function(db, callback) {
@@ -87,8 +85,6 @@ exports.update = function(id, updatedDocument) {
         var collection = db.collection('text');
         // Find some documents
         collection.findOneAndUpdate({_id : id}, updatedDocument).toArray(function(err, docs) {
-            console.log("Found the following records");
-            console.dir(docs);
             callback(docs);
         });
     };
@@ -96,8 +92,9 @@ exports.update = function(id, updatedDocument) {
     MongoClient.connect(url, function(err, db) {
         assert.equal(null, err);
         console.log("Connected correctly to server");
-        update(db, function() {
+        update(db, function(docs) {
             db.close();
+            callback(docs);
         });
     });
 };
