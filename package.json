@@ -16,6 +16,7 @@
     "mongodb": "~2.0",
     "express": "4.13.4",
     "wagner-core": "0.2.0",
-    "http-status": "0.2.0"
+    "http-status": "0.2.0",
+    "browserify": "13.0.0"
   }
 }
