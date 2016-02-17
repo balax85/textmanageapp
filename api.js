@@ -14,7 +14,8 @@ module.exports = function(wagner) {
     api.use(bodyparser.json());
 
     api.post('/addNewPost', function(req, res) {
-        mongoDbUtil.insert(req.body.data.newDocument, function() {
+        console.log(req.body);
+        mongoDbUtil.insert(req.body, function() {
             res.json({});
         });
     });
@@ -27,11 +28,14 @@ module.exports = function(wagner) {
     });
 
     api.post('/:id/update', function(req, res) {
-        mongoDbUtil.update(req.params.id, req.body.data.newDocument, function() {
+        mongoDbUtil.update(req.params.id, req.body, function() {
             res.json({});
         });
     });
 
+    api.get('*', function(req, res) {
+        res.sendfile('./app/index.html'); // load the single view file (angular will handle the page changes on the front-end)
+    });
 
     return api;
 };

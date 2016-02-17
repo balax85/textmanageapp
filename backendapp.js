@@ -63,6 +63,22 @@ var wagner = require('wagner-core');
 var app = express();
 app.use('/api/v1', require('./api')(wagner));
 
+//app.use(express.static(__dirname + '/app'));
+//app.use(express.static(__dirname + '/app/pages'));
+
+//app.use(express.static(__dirname + '/app'));
+//app.use(express.static(__dirname + '/app/pages/postList.html'));
+//app.use(express.static(__dirname + '/node_modules/angular'));
+
+app.use(express.static(__dirname + '/app'));
+app.use(express.static(__dirname + '/app/pages'));
+
+//app.use(function(req, res) {
+  // Use res.sendfile, as it streams instead of reading the file into memory.
+//  res.sendfile(__dirname + '/app/index.html');
+//});
+
+
 
 app.listen(3000);
 console.log('Listening on port 3000!');

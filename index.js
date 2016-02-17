@@ -1,5 +1,5 @@
-var controllers = require('./WebContent/controllers');
-var directives = require('./WebContent/directives');
+var controllers = require('./app/controllers');
+var directives = require('./app/directives');
 //var services = require('./services');
 var _ = require('underscore');
 
@@ -22,15 +22,12 @@ var app = angular.module('mean-retail', ['mean-retail.components', 'ngRoute']);
 app.config(function($routeProvider) {
   $routeProvider.
     when('/', {
-      templateUrl: 'WebContent/pages/postList.html'
+      templateUrl: 'app/pages/postList.html'
     }).
     when('/add', {
-      template: 'WebContent/pages/add.html'
-    }).
-    when('/product/:id', {
-      template: '<product-details></product-details>'
+      template: 'app/pages/add.html'
     }).
     when('/edit/:id', {
-      template: 'WebContent/pages/edit.html'
+      template: 'app/pages/edit.html'
     });
 });
