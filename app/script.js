@@ -33,11 +33,11 @@ textApp.controller('PostController', function($scope, $http) {
 		$scope.searchText = $scope.searchText != null && $scope.searchText != undefined ? $scope.searchText : "";
 
 		//var searchPosts = $http.get("http://localhost:8983/solr/textdb/select?q=text%3A*" + $scope.searchText + "*&wt=json&indent=true");
-		var searchPosts = $http.get("http://localhost:3000/api/v1/getAll");
+		var searchPosts = $http.get("api/v1/getAll");
 
 		searchPosts.success(function(data, status, headers, config) {
 			console.log(data);
-			$scope.posts = data.response.docs;
+			$scope.posts = data;
 		});
 		searchPosts.error(function(data, status, headers, config) {
 			console.log(data, status, headers, config);
@@ -79,10 +79,12 @@ textApp.controller('AddPost', function($scope, $http, $location) {
 textApp.controller('EditPost', function($scope, $http, $location, $routeParams) {
 
 	//I do a get to obtain the information to insert into the edit page
-	var responsePromise = $http.get("rest/post/" + $routeParams.id);
+	var responsePromise = $http.get("api/v1/" + $routeParams.id);
 
 	responsePromise.success(function(data, status, headers, config) {
-		$scope.post = data;
+		console.log("data", data);
+		$scope.post = data[0];
+		console.log($scope.post);
 	});
 	responsePromise.error(function(data, status, headers, config) {
 		alert("AJAX failed!");

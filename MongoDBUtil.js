@@ -5,7 +5,8 @@
 var url = 'mongodb://localhost:27017/textmanage';
 
 var MongoClient = require('mongodb').MongoClient
-    , assert = require('assert');
+    , assert = require('assert'),
+    ObjectID = require('mongodb').ObjectID;
 
 exports.insert = function(newDocument, callback) {
     console.log('Insert new document');
@@ -61,7 +62,10 @@ exports.findById = function(id, callback) {
         // Get the documents collection
         var collection = db.collection('text');
         // Find some documents
-        collection.find({_id : id}).toArray(function(err, docs) {
+        console.log("Find by id = " + id);
+        var objectId = new ObjectID(id);
+        collection.find({_id : objectId}).toArray(function(err, docs) {
+            console.log("docs", docs);
             callback(docs);
         });
     };
