@@ -41,6 +41,9 @@ exports.findAll = function(callback) {
         var collection = db.collection('text');
         // Find some documents
         collection.find({}).toArray(function(err, docs) {
+            docs.forEach(function(entry) {
+               entry.score = entry.title.length;
+            });
             callback(docs);
         });
     }
@@ -88,8 +91,8 @@ exports.update = function(id, updatedDocument, callback) {
         // Get the documents collection
         var collection = db.collection('text');
         // Find some documents
-        collection.findOneAndUpdate({_id : id}, updatedDocument).toArray(function(err, docs) {
-            callback(docs);
+        collection.findOneAndUpdate({_id : id}, updatedDocument, function(err, doc) {
+            callback(doc);
         });
     };
 

@@ -101,9 +101,11 @@ textApp.controller('EditPost', function($scope, $http, $location, $routeParams) 
 			text : $scope.post.text
 		};
 
+		console.log("id", $scope.post);
+
 		var responsePromise = $http({
-			method: 'PUT',
-			url: 'rest/post/' + $scope.post.id + '/update',
+			method: 'POST',
+			url: 'api/v1/' + $scope.post._id + '/update',
 			data: json,
 			headers: {'Content-Type': 'application/json'}
 		});
