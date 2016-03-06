@@ -8,11 +8,17 @@ var status = require('http-status');
 var _ = require('underscore');
 var mongoDbUtil = require("./MongoDbUtil");
 
+/**
+ * class that expose apis to manage the operation on db
+ * @param wagner
+ * @returns {*}
+ */
 module.exports = function(wagner) {
     var api = express.Router();
 
     api.use(bodyparser.json());
 
+    //rest to add a new post
     api.post('/addNewPost', function(req, res) {
         console.log(req.body);
         mongoDbUtil.insert(req.body, function() {
@@ -20,6 +26,7 @@ module.exports = function(wagner) {
         });
     });
 
+    //rest to get all the documents
     api.get('/getAll', function(req, res) {
         console.log("Get All");
         mongoDbUtil.findAll(function(docs) {
@@ -27,18 +34,21 @@ module.exports = function(wagner) {
         });
     });
 
+    //rest to update a document
     api.post('/:id/update', function(req, res) {
         mongoDbUtil.update(req.params.id, req.body, function() {
             res.json({});
         });
     });
 
+    //rest tp get a document
     api.get('/:id', function(req, res) {
         mongoDbUtil.findById(req.params.id, function(docs) {
             res.json(docs);
         });
     });
 
+    //redirect to index.html for all others url
     api.get('*', function(req, res) {
         res.sendfile('./app/index.html'); // load the single view file (angular will handle the page changes on the front-end)
     });

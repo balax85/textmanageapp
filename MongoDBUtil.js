@@ -8,23 +8,21 @@ var MongoClient = require('mongodb').MongoClient
     , assert = require('assert'),
     ObjectID = require('mongodb').ObjectID;
 
+//function to insert the document on mongodb
 exports.insert = function(newDocument, callback) {
-    console.log('Insert new document');
-
     newDocument.inserDate = new Date();
 
     var insertDocuments = function(db, callback) {
-        // Get the documents collection
         var collection = db.collection('text');
-        // Insert some documents
+        // Insert the document in mongo
         collection.insertOne(newDocument, function(err, result) {
             callback(result);
         });
     };
 
+    //connection to db
     MongoClient.connect(url, function(err, db) {
         assert.equal(null, err);
-        console.log("Connected correctly to server");
         insertDocuments(db, function(result) {
             db.close();
             callback(result);
@@ -33,13 +31,12 @@ exports.insert = function(newDocument, callback) {
 
 };
 
+//function to  find all the documents of mongo
 exports.findAll = function(callback) {
-    console.log('Find all documents');
 
     var findDocuments = function(db, callback) {
-        // Get the documents collection
         var collection = db.collection('text');
-        // Find some documents
+        // Find all documents
         collection.find({}).toArray(function(err, docs) {
             docs.forEach(function(entry) {
                entry.score = entry.title.length;
@@ -48,9 +45,9 @@ exports.findAll = function(callback) {
         });
     }
 
+    //connection to db
     MongoClient.connect(url, function(err, db) {
         assert.equal(null, err);
-        console.log("Connected correctly to server");
         findDocuments(db, function(docs) {
             db.close();
             callback(docs);
@@ -58,14 +55,12 @@ exports.findAll = function(callback) {
     });
 };
 
+//function to find a document by id
 exports.findById = function(id, callback) {
-    console.log('Find document by id');
 
     var findDocument = function(db, callback) {
-        // Get the documents collection
         var collection = db.collection('text');
-        // Find some documents
-        console.log("Find by id = " + id);
+        //find the document with an id
         var objectId = new ObjectID(id);
         collection.find({_id : objectId}).toArray(function(err, docs) {
             console.log("docs", docs);
@@ -73,9 +68,9 @@ exports.findById = function(id, callback) {
         });
     };
 
+    //connect to db
     MongoClient.connect(url, function(err, db) {
         assert.equal(null, err);
-        console.log("Connected correctly to server");
         findDocument(db, function(docs) {
             db.close();
             callback(docs);
@@ -84,21 +79,20 @@ exports.findById = function(id, callback) {
 
 };
 
+//fucntion to update a document
 exports.update = function(id, updatedDocument, callback) {
-    console.log('Find document by id');
 
     var update = function(db, callback) {
-        // Get the documents collection
         var collection = db.collection('text');
-        // Find some documents
+        //find and update a document
         collection.findOneAndUpdate({_id : id}, updatedDocument, function(err, doc) {
             callback(doc);
         });
     };
 
+    //connect to db
     MongoClient.connect(url, function(err, db) {
         assert.equal(null, err);
-        console.log("Connected correctly to server");
         update(db, function(docs) {
             db.close();
             callback(docs);
